@@ -222,13 +222,33 @@
  * hooked terminal, so the wordmark uses a text-grade opsz, standard width, and
  * no ligatures — conventional letterforms at a very large size.
  */
+/*
+ * The hero IGN uses the body grotesque rather than the display face.
+ * Bricolage's 'f' has a distinctive hooked terminal that reads as a stylised
+ * glyph at hero size; Instrument Sans has a conventional one. Ligatures are
+ * off so "ft" never fuses into a single form.
+ */
 .wordmark-hero {
-  font-family: var(--font-display);
-  font-variation-settings: "wdth" 100, "opsz" 14;
-  font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "calt" 0;
+  font-family: var(--font-sans);
   font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 0.9;
+  font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "calt" 0;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+}
+
+/*
+ * Hero vertical rhythm scales with viewport HEIGHT, not width. Tall monitors
+ * get the open, airy spacing; short laptops (768px) compress automatically so
+ * the headline figures stay above the fold instead of being pushed off-screen.
+ */
+.hero-gap-sm {
+  margin-top: clamp(0.85rem, 2.4vh, 1.75rem);
+}
+.hero-gap-md {
+  margin-top: clamp(1rem, 3.1vh, 2.5rem);
+}
+.hero-gap-lg {
+  margin-top: clamp(1.25rem, 3.8vh, 2.75rem);
 }
 
 /* outlined "stencil" wordmark used on the landing */

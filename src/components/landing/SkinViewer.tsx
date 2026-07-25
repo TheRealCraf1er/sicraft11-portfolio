@@ -144,7 +144,7 @@ export function SkinViewer({ ign }: { ign: string }) {
 
         <div
           ref={hostRef}
-          className="dot-grid relative h-[340px] w-full sm:h-[420px] lg:h-[480px]"
+          className="dot-grid relative h-[300px] w-full sm:h-[380px] lg:h-[min(480px,46vh)]"
         >
           <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 

@@ -21,7 +21,7 @@ function SkinViewerFallback() {
         <div className="flex items-center justify-between border-b border-bone/8 px-3 py-2">
           <span className="label label-ember">Specimen · Skin</span>
         </div>
-        <div className="dot-grid grid h-[340px] w-full place-items-center sm:h-[420px] lg:h-[480px]">
+        <div className="dot-grid grid h-[300px] w-full place-items-center sm:h-[380px] lg:h-[min(480px,46vh)]">
           <Loader2 className="animate-spin text-ember" size={20} />
         </div>
         <div className="h-[33px] border-t border-bone/8" />
@@ -109,9 +109,9 @@ export function Landing() {
       </motion.div>
 
       {/* grading: darken for legibility, warm the highlights, vignette */}
-      <div className="absolute inset-0 -z-10 bg-ink/55" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/45 to-ink/70" />
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(100%_75%_at_50%_50%,transparent_25%,rgba(7,8,12,0.85)_100%)]" />
+      <div className="absolute inset-0 -z-10 bg-ink/38" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/28 to-ink/52" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(100%_75%_at_50%_50%,transparent_30%,rgba(7,8,12,0.7)_100%)]" />
       <div className="absolute inset-0 -z-10 mix-blend-soft-light bg-[radial-gradient(60%_50%_at_80%_20%,rgba(255,106,43,0.5),transparent_70%)]" />
 
       <CoverControl />
@@ -144,14 +144,14 @@ export function Landing() {
 
       {/* ================= main ================= */}
       <motion.div
-        className="relative z-10 mx-auto flex w-full max-w-[88rem] flex-1 items-center px-5 pb-28 sm:px-8"
+        className="relative z-10 mx-auto flex w-full max-w-[88rem] flex-1 items-center px-5 pb-[clamp(3.75rem,9vh,7rem)] sm:px-8"
         style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
       >
-        <div className="grid w-full items-center gap-10 lg:grid-cols-12 lg:gap-14">
+        <div className="grid w-full items-center gap-12 lg:grid-cols-12 lg:gap-20 xl:gap-28">
           {/* ---------- identity ---------- */}
           <div className="lg:col-span-7">
             <motion.p
-              className="label label-ember mb-4"
+              className="label label-ember mb-6"
               initial={{ opacity: 0, x: -12 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
@@ -160,7 +160,7 @@ export function Landing() {
             </motion.p>
 
             <motion.h1
-              className="wordmark-hero text-[clamp(3.5rem,12vw,9.5rem)] text-bone"
+              className="wordmark-hero text-[clamp(3rem,min(12vw,17vh),9.5rem)] text-bone"
               initial={{ opacity: 0, y: 30, clipPath: "inset(0 0 100% 0)" }}
               animate={{ opacity: 1, y: 0, clipPath: "inset(0 0 0% 0)" }}
               transition={{ duration: 1, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
@@ -174,7 +174,7 @@ export function Landing() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="mt-4 flex items-center gap-3">
+              <div className="hero-gap-sm flex items-center gap-3">
                 <span className="h-px w-10 bg-ember" />
                 <EditableText
                   as="p"
@@ -191,11 +191,11 @@ export function Landing() {
                 multiline
                 value={content.tagline}
                 onChange={(v) => updateContent({ tagline: v })}
-                className="text-pretty mt-6 max-w-xl text-lg leading-relaxed text-bone-2 sm:text-xl"
+                className="text-pretty hero-gap-md max-w-xl text-lg leading-relaxed text-bone-2 sm:text-xl"
               />
 
               {/* about me */}
-              <div className="mt-8 max-w-xl border-l-2 border-ember/50 pl-5">
+              <div className="hero-gap-md max-w-xl border-l-2 border-ember/50 pl-6">
                 <EditableText
                   as="p"
                   label="about title"
@@ -214,7 +214,7 @@ export function Landing() {
               </div>
 
               {/* CTAs */}
-              <div className="mt-9 flex flex-wrap items-center gap-3">
+              <div className="hero-gap-lg flex flex-wrap items-center gap-4">
                 <span className="glow-host">
                   <span className="glow-orb" aria-hidden />
                   <button onClick={copyTag} className="btn-ember">
@@ -233,7 +233,7 @@ export function Landing() {
               </div>
 
               {/* headline figures */}
-              <dl className="panel mt-8 grid max-w-xl grid-cols-3 divide-x divide-bone/10">
+              <dl className="panel hero-gap-md grid max-w-xl grid-cols-3 divide-x divide-bone/10">
                 {content.heroStats.map((stat, i) => (
                   <div key={stat.id} className="px-3 py-3.5 sm:px-4">
                     {editing ? (
@@ -269,7 +269,7 @@ export function Landing() {
 
           {/* ---------- specimen + discord ---------- */}
           <motion.div
-            className="space-y-4 lg:col-span-5"
+            className="space-y-5 lg:col-span-5"
             initial={{ opacity: 0, y: 34 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.95, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
