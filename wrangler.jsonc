@@ -4,7 +4,7 @@
   // There is no `main` entry point on purpose: with only `assets` configured,
   // Wrangler uploads `dist/` as a pure static site — no server-side code, no
   // request billing. This is the modern replacement for Cloudflare Pages.
-  "name": "sicraft11-portfolio",
+  "name": "sicraft11",
   "compatibility_date": "2025-09-01",
   // Explicitly keep the *.workers.dev hostname enabled. Without this, the
   // subdomain can end up unbound after a deploy, which surfaces as a bare
