@@ -72,10 +72,26 @@ account stays unverified, and **nobody can ever register a review account.**
 
 ```sql
 insert into public.admins (user_id)
-select id from auth.users where email = 'hethenet598@gmail.com';
+select id from auth.users where lower(trim(email)) = 'hethenet598@gmail.com'
+on conflict (user_id) do nothing;
 ```
 
-- [ ] Expect: *"Success. 1 row"*. If it says 0 rows, the user wasn't created — redo 1.4.
+- [ ] Expect: **"Success. No rows returned"** — that is the correct result.
+      An `INSERT` never reports rows unless you add `RETURNING`, so "no rows"
+      does **not** mean it failed.
+
+- [ ] **Verify it actually worked** — run this separately:
+
+```sql
+select u.email, u.email_confirmed_at, a.user_id
+from public.admins a
+join auth.users u on u.id = a.user_id;
+```
+
+- [ ] Expect **one row showing your email**, with `email_confirmed_at` filled in.
+  - No rows at all → the user from 1.4 doesn't exist; redo 1.4.
+  - Row present but `email_confirmed_at` is `null` → "Auto Confirm User" was
+    missed; delete the user and redo 1.4 with the box ticked.
 
 ### 1.6 Copy your two keys
 
