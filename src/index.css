@@ -1,0 +1,592 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   SiCraft11 — "MOONLIT DOSSIER"
+   A staff personnel file lit by a single torch.
+   Ink + bone + ember. Mono data, expressive display type, hairline rules.
+   ========================================================================= */
+
+@theme {
+  /* --- surfaces (cold, near-black, very slightly blue) --- */
+  --color-ink: #07080c;
+  --color-ink-2: #0a0c12;
+  --color-ink-3: #0f1219;
+  --color-ink-4: #151924;
+  --color-ink-5: #1d2230;
+
+  /* --- ink on paper --- */
+  --color-bone: #f0eadc;
+  --color-bone-2: #c9c3b5;
+  --color-ash: #7c8293;
+  --color-ash-2: #565c6c;
+  --color-ash-3: #333949;
+
+  /* --- the torch. the one brand accent. --- */
+  --color-ember: #ff6a2b;
+  --color-ember-2: #ffa463;
+  --color-ember-3: #ffd7a8;
+  --color-ember-deep: #8f3211;
+
+  /* --- functional status colours only --- */
+  --color-moss: #7be05a;
+  --color-sand: #e8b33a;
+  --color-clay: #e0473c;
+
+  /* --- discord, used only inside discord surfaces --- */
+  --color-blurple: #5865f2;
+  --color-blurple-2: #8b95f7;
+
+  /* --- type --- */
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+
+  /* --- motion --- */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* --- layout --- */
+  --spacing-rail: 4.5rem;
+}
+
+/* =========================================================================
+   BASE
+   ========================================================================= */
+
+@layer base {
+  * {
+    border-color: color-mix(in oklab, var(--color-bone) 9%, transparent);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-ink);
+    color: var(--color-bone-2);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-bone);
+    font-weight: 600;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin: 0;
+    font-variation-settings: "wdth" 100;
+  }
+
+  ::selection {
+    background: var(--color-ember);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ember);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* thin, dark, unobtrusive scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-ink);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-ink-5);
+    border: 3px solid var(--color-ink);
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-ash-3);
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+  }
+}
+
+/* =========================================================================
+   TEXTURE — grain, dot grid, scanlines.
+   These give the whole page a printed / photocopied dossier feel.
+   ========================================================================= */
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 30;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+.grain-fixed {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.dot-grid {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    color-mix(in oklab, var(--color-bone) 13%, transparent) 1px,
+    transparent 0
+  );
+  background-size: 28px 28px;
+}
+
+.blueprint-grid {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--color-bone) 4%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-bone) 4%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 64px 64px;
+}
+
+/* =========================================================================
+   TYPE HELPERS
+   ========================================================================= */
+
+/* small uppercase mono label — the dossier's "field name" voice */
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-ash);
+}
+
+.label-ember {
+  color: var(--color-ember);
+}
+
+/* condensed display for very large headings */
+.display-tight {
+  font-family: var(--font-display);
+  font-variation-settings: "wdth" 82, "opsz" 96;
+  letter-spacing: -0.045em;
+  line-height: 0.86;
+  font-weight: 700;
+}
+
+/*
+ * The hero IGN. Bricolage's display optical size gives the 'f' an exaggerated
+ * hooked terminal, so the wordmark uses a text-grade opsz, standard width, and
+ * no ligatures — conventional letterforms at a very large size.
+ */
+.wordmark-hero {
+  font-family: var(--font-display);
+  font-variation-settings: "wdth" 100, "opsz" 14;
+  font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "calt" 0;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.9;
+}
+
+/* outlined "stencil" wordmark used on the landing */
+.wordmark-outline {
+  -webkit-text-stroke: 1.25px color-mix(in oklab, var(--color-bone) 42%, transparent);
+  color: transparent;
+  paint-order: stroke fill;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+.text-pretty {
+  text-wrap: pretty;
+}
+
+/* =========================================================================
+   SURFACES & RULES
+   ========================================================================= */
+
+.hairline {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    color-mix(in oklab, var(--color-bone) 22%, transparent),
+    color-mix(in oklab, var(--color-bone) 4%, transparent) 70%,
+    transparent
+  );
+}
+
+.panel {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--color-ink-4) 58%, transparent),
+    color-mix(in oklab, var(--color-ink-3) 80%, transparent)
+  );
+  border: 1px solid color-mix(in oklab, var(--color-bone) 9%, transparent);
+  backdrop-filter: blur(18px) saturate(135%);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
+  box-shadow:
+    inset 0 1px 0 0 color-mix(in oklab, var(--color-bone) 7%, transparent),
+    0 18px 44px -26px rgb(0 0 0 / 0.9);
+}
+
+/*
+ * The section index rail only renders when it can sit completely outside the
+ * 88rem content column. Below that width it would collide with body text, so
+ * it simply hides — it is decorative navigation, not essential.
+ */
+.rail {
+  display: none;
+}
+
+@media (min-width: 1700px) {
+  .rail {
+    display: block;
+    left: calc((100vw - 88rem) / 2 - 8rem);
+  }
+}
+
+/* corner registration ticks — the "specimen frame" motif */
+.ticks {
+  position: relative;
+}
+.ticks::before,
+.ticks::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--color-ember);
+  opacity: 0.85;
+  pointer-events: none;
+}
+.ticks::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+.ticks::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+
+/* ember glow used sparingly behind focal elements */
+.ember-bloom {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--color-ember) 30%, transparent),
+    transparent 100%
+  );
+  filter: blur(40px);
+}
+
+/* =========================================================================
+   MOTION
+   ========================================================================= */
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.marquee-track {
+  animation: marquee 46s linear infinite;
+  will-change: transform;
+}
+.marquee-host:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes torch-flicker {
+  0%,
+  100% {
+    opacity: 0.92;
+  }
+  18% {
+    opacity: 1;
+  }
+  34% {
+    opacity: 0.82;
+  }
+  52% {
+    opacity: 0.97;
+  }
+  71% {
+    opacity: 0.86;
+  }
+}
+.flicker {
+  animation: torch-flicker 4.5s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-moss) 55%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+.live-dot {
+  animation: live-pulse 2.4s ease-out infinite;
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(-60%);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(160%);
+    opacity: 0;
+  }
+}
+.cue-bead {
+  animation: scroll-cue 2.1s var(--ease-expo) infinite;
+}
+
+/* =========================================================================
+   COMPONENT PRIMITIVES
+   ========================================================================= */
+
+/* the primary ember button */
+.btn-ember {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-ember);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition:
+    transform 0.35s var(--ease-expo),
+    box-shadow 0.35s var(--ease-expo),
+    background-color 0.2s ease;
+}
+.btn-ember:hover {
+  background: var(--color-ember-2);
+  transform: translateY(-2px);
+  /* layered bloom: tight rim, mid falloff, wide neon haze */
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--color-ember) 55%, transparent),
+    0 10px 30px -8px color-mix(in oklab, var(--color-ember) 70%, transparent),
+    0 0 64px -8px color-mix(in oklab, var(--color-ember) 50%, transparent);
+}
+.btn-ember:active {
+  transform: translateY(0);
+}
+
+/* ghost / outline button */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: transparent;
+  color: var(--color-bone);
+  border: 1px solid color-mix(in oklab, var(--color-bone) 20%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    transform 0.35s var(--ease-expo);
+}
+.btn-ghost:hover {
+  border-color: color-mix(in oklab, var(--color-ember) 70%, transparent);
+  background: color-mix(in oklab, var(--color-ember) 8%, transparent);
+  transform: translateY(-2px);
+  box-shadow: 0 0 40px -12px color-mix(in oklab, var(--color-ember) 60%, transparent);
+}
+
+/* =========================================================================
+   HERO GLOW — a true radial neon bloom sitting *behind* a CTA.
+
+   `isolation: isolate` gives the host its own stacking context, so the orb's
+   negative z-index keeps it behind the button but still above the page.
+   The button's own hover transform would otherwise trap it.
+   ========================================================================= */
+
+.glow-host {
+  position: relative;
+  display: inline-flex;
+  isolation: isolate;
+}
+
+/* full-width variant, for block-level CTAs */
+.glow-host-block {
+  position: relative;
+  display: block;
+  isolation: isolate;
+}
+
+.glow-orb {
+  position: absolute;
+  inset: -70% -30%;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 999px;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--color-ember) 75%, transparent),
+    transparent 100%
+  );
+  filter: blur(24px);
+  opacity: 0;
+  transform: scale(0.72);
+  transition:
+    opacity 0.5s var(--ease-expo),
+    transform 0.5s var(--ease-expo);
+}
+
+.glow-host:hover .glow-orb,
+.glow-host:focus-within .glow-orb,
+.glow-host-block:hover .glow-orb,
+.glow-host-block:focus-within .glow-orb {
+  opacity: 0.95;
+  transform: scale(1);
+}
+
+/* cool variant for secondary actions */
+.glow-orb-cool {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--color-bone) 45%, transparent),
+    transparent 100%
+  );
+}
+
+/* form fields — flat, mono, dossier-like */
+.field {
+  width: 100%;
+  background: var(--color-ink-2);
+  border: 1px solid color-mix(in oklab, var(--color-bone) 11%, transparent);
+  color: var(--color-bone);
+  padding: 0.625rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+.field::placeholder {
+  color: var(--color-ash-2);
+}
+.field:focus {
+  outline: none;
+  border-color: var(--color-ember);
+  background: var(--color-ink-3);
+}
+.field:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* role / status chips */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.1875rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+/* =========================================================================
+   UTILITIES
+   ========================================================================= */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.mask-fade-r {
+  -webkit-mask-image: linear-gradient(to right, black 78%, transparent 100%);
+  mask-image: linear-gradient(to right, black 78%, transparent 100%);
+}
+
+.mask-fade-x {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
