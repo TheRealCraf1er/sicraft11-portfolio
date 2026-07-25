@@ -6,6 +6,10 @@
   // request billing. This is the modern replacement for Cloudflare Pages.
   "name": "sicraft11-portfolio",
   "compatibility_date": "2025-09-01",
+  // Explicitly keep the *.workers.dev hostname enabled. Without this, the
+  // subdomain can end up unbound after a deploy, which surfaces as a bare
+  // Cloudflare 404 (error 1042) on every path.
+  "workers_dev": true,
   "assets": {
     "directory": "./dist",
     // The site is one page; serve index.html rather than a 404 page for any
