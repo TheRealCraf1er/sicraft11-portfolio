@@ -326,6 +326,11 @@ export const SEED_SERVERS: ServerEntry[] = RAW.map((s, i) => ({
 export const SEED_CONTENT: SiteContent = {
   coverImage: "",
   coverPositionY: 50,
+  heroStats: [
+    { id: "hs-1", value: "106", label: "Servers managed" },
+    { id: "hs-2", value: "200K+", label: "Players managed" },
+    { id: "hs-3", value: "1+", label: "Years staffing" },
+  ],
   ign: "SiCraft11",
   tagline: "Minecraft & Discord staff — moderation, community, and the small bots that keep both running.",
   roleLine: "Moderator · Admin · Media Manager Assistant",

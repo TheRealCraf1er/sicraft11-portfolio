@@ -76,9 +76,18 @@ export interface Skill {
   body: string;
 }
 
+/** Headline figure in the landing stat strip. */
+export interface HeroStat {
+  id: string;
+  /** Display string — the numeric part animates, e.g. "200K+" ticks to 200. */
+  value: string;
+  label: string;
+}
+
 export interface SiteContent {
   // --- landing ---
   coverImage: string;
+  heroStats: HeroStat[];
   coverPositionY: number;
   ign: string;
   tagline: string;

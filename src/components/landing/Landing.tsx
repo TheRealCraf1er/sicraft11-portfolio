@@ -3,8 +3,10 @@ import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion
 import { Check, Copy, ArrowDown, ImageOff, Loader2 } from "lucide-react";
 import { useSite } from "../../lib/store";
 import { EditableText } from "../ui/Editable";
+import { StatCounter } from "../ui/Counter";
 import { DiscordCard } from "./DiscordCard";
 import { CoverControl } from "./CoverControl";
+import type { HeroStat } from "../../lib/types";
 
 // three.js is heavy — keep it out of the initial bundle so the landing paints fast.
 const SkinViewer = lazy(() =>
@@ -62,6 +64,13 @@ export function Landing() {
   const contentOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
   const [namePart, numPart] = splitIgn(content.ign);
+
+  const setHeroStat = (id: string, patch: Partial<HeroStat>) =>
+    updateContent({
+      heroStats: content.heroStats.map((s) =>
+        s.id === id ? { ...s, ...patch } : s,
+      ),
+    });
 
   const copyTag = async () => {
     try {
@@ -222,6 +231,39 @@ export function Landing() {
                   </a>
                 </span>
               </div>
+
+              {/* headline figures */}
+              <dl className="panel mt-8 grid max-w-xl grid-cols-3 divide-x divide-bone/10">
+                {content.heroStats.map((stat, i) => (
+                  <div key={stat.id} className="px-3 py-3.5 sm:px-4">
+                    {editing ? (
+                      <EditableText
+                        as="dd"
+                        label="figure"
+                        value={stat.value}
+                        onChange={(v) => setHeroStat(stat.id, { value: v })}
+                        className="display-tight text-[clamp(1.35rem,4vw,2.15rem)] text-ember"
+                      />
+                    ) : (
+                      <dd>
+                        <StatCounter
+                          raw={stat.value}
+                          duration={1.6 + i * 0.2}
+                          className="display-tight block text-[clamp(1.35rem,4vw,2.15rem)] text-ember tabular-nums"
+                        />
+                      </dd>
+                    )}
+
+                    <EditableText
+                      as="dt"
+                      label="caption"
+                      value={stat.label}
+                      onChange={(v) => setHeroStat(stat.id, { label: v })}
+                      className="mt-1 font-mono text-[9px] leading-tight tracking-[0.14em] text-ash uppercase sm:text-[10px]"
+                    />
+                  </div>
+                ))}
+              </dl>
             </motion.div>
           </div>
 

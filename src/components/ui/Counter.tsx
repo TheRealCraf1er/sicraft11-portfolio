@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useInView, useReducedMotion, animate } from "framer-motion";
+import { parseStat } from "../../lib/utils";
 
 interface CounterProps {
   value: number;
@@ -50,5 +51,34 @@ export function Counter({
       {group ? display.toLocaleString("en-US") : display}
       {suffix}
     </span>
+  );
+}
+
+/**
+ * Animates a display string like "200K+" or "106" — the number ticks up while
+ * any surrounding text ("K+", "~") stays put. Falls back to plain text if the
+ * string has no number in it.
+ */
+export function StatCounter({
+  raw,
+  className,
+  duration,
+}: {
+  raw: string;
+  className?: string;
+  duration?: number;
+}) {
+  const { prefix, value, suffix } = parseStat(raw);
+
+  if (value == null) return <span className={className}>{raw}</span>;
+
+  return (
+    <Counter
+      value={value}
+      prefix={prefix}
+      suffix={suffix}
+      duration={duration}
+      className={className}
+    />
   );
 }
