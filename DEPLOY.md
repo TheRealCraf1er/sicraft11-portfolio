@@ -29,22 +29,42 @@ Powers reviewer accounts, the reviews feed, and edits that persist for visitors.
 - [ ] Click **Run**
 - [ ] Expect: *"Success. No rows returned"* — that's correct
 
+### ⚠️ First: there are THREE different passwords. Don't mix them up.
+
+| # | Password | Set where | Used for |
+| :-: | :-- | :-- | :-- |
+| 1 | Supabase login | "Continue with GitHub" | Getting into the dashboard. None, if you used GitHub. |
+| 2 | **Database password** | Step 1.1 (auto-generated) | Direct DB access. **The website never uses it.** |
+| 3 | **Owner password** | **Step 1.4 — you invent it** | **Unlocking edit mode on your live site.** |
+
+The one you'll actually type again is **#3, from step 1.4**. Write it down.
+
 ### 1.3 Turn off email confirmation
 
-Reviewers sign up with a *username*, which the app maps to a fake email address.
-There's no real inbox, so confirmation must be off or nobody can register.
+Reviewers sign up with a *username*, which the app maps to a fake email address
+(`bob` becomes `bob@users.sicraft11.app`). That inbox doesn't exist — so if
+confirmation is left on, Supabase mails a verification link into the void, the
+account stays unverified, and **nobody can ever register a review account.**
 
-- [ ] **Authentication** → **Sign In / Providers** → **Email**
-- [ ] Turn **OFF** "Confirm email"
-- [ ] **Save**
+- [ ] Left sidebar → **Authentication** (shield/person icon)
+- [ ] In the sub-menu → **Sign In / Providers**
+      *(older dashboards just call this **Providers** — same page)*
+- [ ] Click **Email** at the top of the provider list to expand it
+- [ ] Find **"Confirm email"** *(some versions: "Enable email confirmations")*
+- [ ] Switch it **OFF** — grey, not green
+- [ ] Click **Save** at the bottom of that panel
 
 ### 1.4 Create your owner account
 
-- [ ] **Authentication** → **Users** → **Add user** → **Create new user**
+- [ ] Left sidebar → **Authentication** → **Users**
+- [ ] Top right → **Add user** (it's a dropdown) → **Create new user**
+      ❌ *not* "Send invitation" — that emails a link instead of creating it now
+- [ ] Fill in:
   - Email: `hethenet598@gmail.com`
-  - Password: pick a strong one — **this is your site's edit-mode password**
-  - ✅ Tick **Auto Confirm User**
-- [ ] **Create user**
+  - Password: invent a strong one — **this is your site's edit password**
+- [ ] ✅ **Tick "Auto Confirm User"** — miss this and you can't unlock edit mode
+- [ ] Click **Create user**
+- [ ] You should now see one row in the Users table showing your email
 
 ### 1.5 Promote yourself to owner
 
