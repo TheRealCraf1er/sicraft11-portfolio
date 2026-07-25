@@ -1,0 +1,15 @@
+{
+  // Cloudflare Workers static-asset deployment.
+  //
+  // There is no `main` entry point on purpose: with only `assets` configured,
+  // Wrangler uploads `dist/` as a pure static site — no server-side code, no
+  // request billing. This is the modern replacement for Cloudflare Pages.
+  "name": "sicraft11-portfolio",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./dist",
+    // The site is one page; serve index.html rather than a 404 page for any
+    // unknown path (e.g. someone typing /contact by hand).
+    "not_found_handling": "single-page-application"
+  }
+}
