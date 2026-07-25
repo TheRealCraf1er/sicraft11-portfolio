@@ -1,15 +1,19 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { SUPABASE_URL, SUPABASE_ANON_KEY, KEY_PLACEHOLDER } from "./config";
 
-const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+const url = SUPABASE_URL;
+const anonKey = SUPABASE_ANON_KEY;
 
 /**
  * The site is fully usable without Supabase — it falls back to seed data plus
- * localStorage so the owner can build and preview offline. Wiring up the two
- * env vars upgrades it to real auth + shared persistence with no code changes.
+ * localStorage so the owner can build and preview offline. Supplying the config
+ * in `config.ts` (or via env vars) upgrades it to real auth + shared persistence.
  */
 export const isSupabaseConfigured = Boolean(
-  url && anonKey && url.startsWith("http"),
+  url &&
+    anonKey &&
+    url.startsWith("http") &&
+    anonKey !== KEY_PLACEHOLDER,
 );
 
 export const supabase: SupabaseClient | null = isSupabaseConfigured
